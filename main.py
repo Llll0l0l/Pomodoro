@@ -11,6 +11,7 @@ WORK_MIN = 1
 SHORT_BREAK_MIN = 1
 LONG_BREAK_MIN = 20
 REPS = 1
+tmr = None
 txt=""
 checkmark = "✓"
 
@@ -18,6 +19,8 @@ checkmark = "✓"
 
 def reset():
     global txt, REPS
+    window.after_cancel(tmr)
+    canvas.itemconfig(timer_text, text="25:00")
     txt = ""
     REPS = 1
     checkmarks.config(text=txt)
@@ -47,7 +50,7 @@ def start_timer():
 
 def count_down(count):
 
-    global REPS, txt, checkmark
+    global REPS, txt, checkmark, tmr
     
 
     if count > 0:
@@ -63,7 +66,7 @@ def count_down(count):
 
         if count > 0:
             canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
-            window.after(100, count_down, count-1)
+            tmr = window.after(100, count_down, count-1)
     
     if count==0:
         if (REPS-1)%8 == 0:
